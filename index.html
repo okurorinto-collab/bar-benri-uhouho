@@ -196,7 +196,82 @@
 
   .card-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
   .card-name-en { font-size: 11px; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
-  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .tag-carbonated { color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
+  .tag-flavor { color: #c4b5fd; border-color: rgba(196,181,253,0.25); }
+  .tag-link { cursor: pointer; }
+  .tag-link:hover { border-color: rgba(var(--accent-rgb),0.5); color: var(--text); }
+
+  /* ─── Tag popup ─── */
+  #tagPopup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+  }
+  #tagPopup.open { display: flex; }
+
+  #tagPopupCard {
+    background: var(--surface);
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: slideUp 0.2s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  #tagPopupClose {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 14px;
+    color: var(--muted);
+    cursor: pointer;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 100px;
+    background: var(--surface2);
+  }
+
+  #tagPopupTitle {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  #tagPopupCategory {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+
+  #tagPopupBody {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
 
   .empty-state {
     display: none;
@@ -240,11 +315,7 @@
     color: var(--text);
   }
 
-  .dict-term-en {
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.04em;
-  }
+  .dict-term-en { display: none; }
 
   .dict-tag {
     margin-left: auto;
@@ -351,62 +422,62 @@
     <div class="base-section" data-section="gin">
       <div class="base-label">🫙 ジン</div>
       <div class="cards">
-        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">マティーニ</div><div class="card-name-en">Martini</div><div class="card-desc">ジン＋ドライベルモット。カクテルの王様と呼ばれる定番中の定番。</div></div>
-        <div class="card" data-base="gin" data-carbonated="false" data-juice="lime"><div class="card-name">ギムレット</div><div class="card-name-en">Gimlet</div><div class="card-desc">ジン＋ライムジュース＋シュガー。「ギムレットには早すぎる」の名言で有名。</div></div>
-        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">ネグローニ</div><div class="card-name-en">Negroni</div><div class="card-desc">ジン＋カンパリ＋スイートベルモット。苦みと甘みのバランスが絶妙。</div></div>
-        <div class="card" data-base="gin" data-carbonated="true" data-juice="lemon"><div class="card-name">トムコリンズ</div><div class="card-name-en">Tom Collins</div><div class="card-desc">ジン＋レモンジュース＋シュガー＋ソーダ。爽やかな夏向きロングカクテル。</div></div>
-        <div class="card" data-base="gin" data-carbonated="true" data-juice="pineapple lemon"><div class="card-name">シンガポールスリング</div><div class="card-name-en">Singapore Sling</div><div class="card-desc">ジンベースにチェリーリキュール、パイン、グレナデンなど。複雑な甘みと酸味。</div></div>
-        <div class="card" data-base="gin" data-carbonated="true" data-juice=""><div class="card-name">ジントニック</div><div class="card-name-en">Gin & Tonic</div><div class="card-desc">ジン＋トニックウォーター。最もシンプルで世界中で愛されるロングカクテル。</div></div>
+        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">マティーニ</div><div class="card-name-en">Martini</div><div class="card-desc">ジン＋ドライベルモット。カクテルの王様と呼ばれる定番中の定番。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">ドライベルモット</span><span class="tag tag-flavor">ドライ</span><span class="tag tag-flavor">辛口</span></div></div>
+        <div class="card" data-base="gin" data-carbonated="false" data-juice="lime"><div class="card-name">ギムレット</div><div class="card-name-en">Gimlet</div><div class="card-desc">ジン＋ライムジュース＋シュガー。「ギムレットには早すぎる」の名言で有名。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">ライム</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">ネグローニ</div><div class="card-name-en">Negroni</div><div class="card-desc">ジン＋カンパリ＋スイートベルモット。苦みと甘みのバランスが絶妙。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">カンパリ</span><span class="tag">スイートベルモット</span><span class="tag tag-flavor">苦い</span><span class="tag tag-flavor">甘い</span></div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice="lemon"><div class="card-name">トムコリンズ</div><div class="card-name-en">Tom Collins</div><div class="card-desc">ジン＋レモンジュース＋シュガー＋ソーダ。爽やかな夏向きロングカクテル。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">レモン</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice="pineapple lemon"><div class="card-name">シンガポールスリング</div><div class="card-name-en">Singapore Sling</div><div class="card-desc">ジンベースにチェリーリキュール、パイン、グレナデンなど。複雑な甘みと酸味。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">チェリーリキュール</span><span class="tag">パイナップル</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">酸っぱい</span></div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice=""><div class="card-name">ジントニック</div><div class="card-name-en">Gin & Tonic</div><div class="card-desc">ジン＋トニックウォーター。最もシンプルで世界中で愛されるロングカクテル。</div><div class="card-tags"><span class="tag">ジン</span><span class="tag">トニックウォーター</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">ほろ苦い</span><span class="tag tag-flavor">さっぱり</span></div></div>
       </div>
     </div>
 
     <div class="base-section" data-section="vodka">
       <div class="base-label">🥃 ウォッカ</div>
       <div class="cards">
-        <div class="card" data-base="vodka" data-carbonated="false" data-juice="cranberry lime"><div class="card-name">コスモポリタン</div><div class="card-name-en">Cosmopolitan</div><div class="card-desc">ウォッカ＋コアントロー＋クランベリー＋ライム。ピンク色が美しいショートカクテル。</div></div>
-        <div class="card" data-base="vodka" data-carbonated="true" data-juice="lime"><div class="card-name">モスコミュール</div><div class="card-name-en">Moscow Mule</div><div class="card-desc">ウォッカ＋ジンジャービア＋ライム。銅のマグカップで提供されることで有名。</div></div>
-        <div class="card" data-base="vodka" data-carbonated="false" data-juice="tomato lemon"><div class="card-name">ブラッディマリー</div><div class="card-name-en">Bloody Mary</div><div class="card-desc">ウォッカ＋トマトジュース＋レモン＋スパイス。二日酔いに効くと言われる。</div></div>
-        <div class="card" data-base="vodka" data-carbonated="false" data-juice="orange"><div class="card-name">スクリュードライバー</div><div class="card-name-en">Screwdriver</div><div class="card-desc">ウォッカ＋オレンジジュース。シンプルで飲みやすい定番ロングカクテル。</div></div>
-        <div class="card" data-base="vodka" data-carbonated="false" data-juice=""><div class="card-name">ホワイトロシアン</div><div class="card-name-en">White Russian</div><div class="card-desc">ウォッカ＋コーヒーリキュール＋生クリーム。映画「ビッグ・リボウスキ」でも有名。</div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="cranberry lime"><div class="card-name">コスモポリタン</div><div class="card-name-en">Cosmopolitan</div><div class="card-desc">ウォッカ＋コアントロー＋クランベリー＋ライム。ピンク色が美しいショートカクテル。</div><div class="card-tags"><span class="tag">ウォッカ</span><span class="tag">コアントロー</span><span class="tag">クランベリー</span><span class="tag">ライム</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">甘い</span></div></div>
+        <div class="card" data-base="vodka" data-carbonated="true" data-juice="lime"><div class="card-name">モスコミュール</div><div class="card-name-en">Moscow Mule</div><div class="card-desc">ウォッカ＋ジンジャービア＋ライム。銅のマグカップで提供されることで有名。</div><div class="card-tags"><span class="tag">ウォッカ</span><span class="tag">ジンジャービア</span><span class="tag">ライム</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">スパイシー</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="tomato lemon"><div class="card-name">ブラッディマリー</div><div class="card-name-en">Bloody Mary</div><div class="card-desc">ウォッカ＋トマトジュース＋レモン＋スパイス。二日酔いに効くと言われる。</div><div class="card-tags"><span class="tag">ウォッカ</span><span class="tag">トマト</span><span class="tag">レモン</span><span class="tag tag-flavor">スパイシー</span><span class="tag tag-flavor">塩気</span></div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="orange"><div class="card-name">スクリュードライバー</div><div class="card-name-en">Screwdriver</div><div class="card-desc">ウォッカ＋オレンジジュース。シンプルで飲みやすい定番ロングカクテル。</div><div class="card-tags"><span class="tag">ウォッカ</span><span class="tag">オレンジ</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice=""><div class="card-name">ホワイトロシアン</div><div class="card-name-en">White Russian</div><div class="card-desc">ウォッカ＋コーヒーリキュール＋生クリーム。映画「ビッグ・リボウスキ」でも有名。</div><div class="card-tags"><span class="tag">ウォッカ</span><span class="tag">カルーア</span><span class="tag">生クリーム</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">濃厚</span></div></div>
       </div>
     </div>
 
     <div class="base-section" data-section="rum">
       <div class="base-label">🥃 ラム</div>
       <div class="cards">
-        <div class="card" data-base="rum" data-carbonated="false" data-juice="lime"><div class="card-name">ダイキリ</div><div class="card-name-en">Daiquiri</div><div class="card-desc">ラム＋ライムジュース＋シュガー。ヘミングウェイが愛したキューバ生まれのカクテル。</div></div>
-        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">モヒート</div><div class="card-name-en">Mojito</div><div class="card-desc">ラム＋ライム＋ミント＋シュガー＋ソーダ。爽やかな香りが特徴の夏の定番。</div></div>
-        <div class="card" data-base="rum" data-carbonated="false" data-juice="pineapple"><div class="card-name">ピニャコラーダ</div><div class="card-name-en">Piña Colada</div><div class="card-desc">ラム＋ココナッツクリーム＋パイナップルジュース。トロピカルな甘みが人気。</div></div>
-        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">キューバリブレ</div><div class="card-name-en">Cuba Libre</div><div class="card-desc">ラム＋コーラ＋ライム。別名「ラム&コーク」。シンプルで世界中で親しまれる。</div></div>
-        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">ダーク＆ストーミー</div><div class="card-name-en">Dark & Stormy</div><div class="card-desc">ダークラム＋ジンジャービア＋ライム。バミューダ発祥のスパイシーなカクテル。</div></div>
+        <div class="card" data-base="rum" data-carbonated="false" data-juice="lime"><div class="card-name">ダイキリ</div><div class="card-name-en">Daiquiri</div><div class="card-desc">ラム＋ライムジュース＋シュガー。ヘミングウェイが愛したキューバ生まれのカクテル。</div><div class="card-tags"><span class="tag">ラム</span><span class="tag">ライム</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">モヒート</div><div class="card-name-en">Mojito</div><div class="card-desc">ラム＋ライム＋ミント＋シュガー＋ソーダ。爽やかな香りが特徴の夏の定番。</div><div class="card-tags"><span class="tag">ラム</span><span class="tag">ライム</span><span class="tag">ミント</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">さっぱり</span><span class="tag tag-flavor">甘い</span></div></div>
+        <div class="card" data-base="rum" data-carbonated="false" data-juice="pineapple"><div class="card-name">ピニャコラーダ</div><div class="card-name-en">Piña Colada</div><div class="card-desc">ラム＋ココナッツクリーム＋パイナップルジュース。トロピカルな甘みが人気。</div><div class="card-tags"><span class="tag">ラム</span><span class="tag">ココナッツ</span><span class="tag">パイナップル</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">トロピカル</span></div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">キューバリブレ</div><div class="card-name-en">Cuba Libre</div><div class="card-desc">ラム＋コーラ＋ライム。別名「ラム&コーク」。シンプルで世界中で親しまれる。</div><div class="card-tags"><span class="tag">ラム</span><span class="tag">コーラ</span><span class="tag">ライム</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">ダーク＆ストーミー</div><div class="card-name-en">Dark & Stormy</div><div class="card-desc">ダークラム＋ジンジャービア＋ライム。バミューダ発祥のスパイシーなカクテル。</div><div class="card-tags"><span class="tag">ダークラム</span><span class="tag">ジンジャービア</span><span class="tag">ライム</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">スパイシー</span></div></div>
       </div>
     </div>
 
     <div class="base-section" data-section="tequila">
       <div class="base-label">🌵 テキーラ</div>
       <div class="cards">
-        <div class="card" data-base="tequila" data-carbonated="false" data-juice="lime"><div class="card-name">マルガリータ</div><div class="card-name-en">Margarita</div><div class="card-desc">テキーラ＋コアントロー＋ライム。塩のスノースタイルが特徴的な定番ショート。</div></div>
-        <div class="card" data-base="tequila" data-carbonated="false" data-juice="orange"><div class="card-name">テキーラサンライズ</div><div class="card-name-en">Tequila Sunrise</div><div class="card-desc">テキーラ＋OJ＋グレナデン。日の出を思わせるグラデーションが美しい。</div></div>
-        <div class="card" data-base="tequila" data-carbonated="true" data-juice="grapefruit lime"><div class="card-name">パロマ</div><div class="card-name-en">Paloma</div><div class="card-desc">テキーラ＋グレープフルーツソーダ＋ライム。メキシコで最も飲まれるカクテルとも。</div></div>
+        <div class="card" data-base="tequila" data-carbonated="false" data-juice="lime"><div class="card-name">マルガリータ</div><div class="card-name-en">Margarita</div><div class="card-desc">テキーラ＋コアントロー＋ライム。塩のスノースタイルが特徴的な定番ショート。</div><div class="card-tags"><span class="tag">テキーラ</span><span class="tag">コアントロー</span><span class="tag">ライム</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">塩気</span></div></div>
+        <div class="card" data-base="tequila" data-carbonated="false" data-juice="orange"><div class="card-name">テキーラサンライズ</div><div class="card-name-en">Tequila Sunrise</div><div class="card-desc">テキーラ＋OJ＋グレナデン。日の出を思わせるグラデーションが美しい。</div><div class="card-tags"><span class="tag">テキーラ</span><span class="tag">オレンジ</span><span class="tag">グレナデン</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">酸っぱい</span></div></div>
+        <div class="card" data-base="tequila" data-carbonated="true" data-juice="grapefruit lime"><div class="card-name">パロマ</div><div class="card-name-en">Paloma</div><div class="card-desc">テキーラ＋グレープフルーツソーダ＋ライム。メキシコで最も飲まれるカクテルとも。</div><div class="card-tags"><span class="tag">テキーラ</span><span class="tag">グレープフルーツ</span><span class="tag">ライム</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">さっぱり</span><span class="tag tag-flavor">酸っぱい</span></div></div>
       </div>
     </div>
 
     <div class="base-section" data-section="whiskey">
       <div class="base-label">🥃 ウイスキー</div>
       <div class="cards">
-        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">オールドファッションド</div><div class="card-name-en">Old Fashioned</div><div class="card-desc">ウイスキー＋砂糖＋ビターズ。現存する最古のカクテルレシピのひとつ。</div></div>
-        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">マンハッタン</div><div class="card-name-en">Manhattan</div><div class="card-desc">ライウイスキー＋スイートベルモット＋ビターズ。「カクテルの女王」とも呼ばれる。</div></div>
-        <div class="card" data-base="whiskey" data-carbonated="false" data-juice="lemon"><div class="card-name">ウイスキーサワー</div><div class="card-name-en">Whiskey Sour</div><div class="card-desc">バーボン＋レモンジュース＋シュガー。酸味と甘みのバランスが取りやすい入門カクテル。</div></div>
-        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">ミントジュレップ</div><div class="card-name-en">Mint Julep</div><div class="card-desc">バーボン＋ミント＋砂糖＋クラッシュドアイス。ケンタッキーダービーの公式カクテル。</div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">オールドファッションド</div><div class="card-name-en">Old Fashioned</div><div class="card-desc">ウイスキー＋砂糖＋ビターズ。現存する最古のカクテルレシピのひとつ。</div><div class="card-tags"><span class="tag">ウイスキー</span><span class="tag">ビターズ</span><span class="tag tag-flavor">苦い</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">複雑</span></div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">マンハッタン</div><div class="card-name-en">Manhattan</div><div class="card-desc">ライウイスキー＋スイートベルモット＋ビターズ。「カクテルの女王」とも呼ばれる。</div><div class="card-tags"><span class="tag">ライウイスキー</span><span class="tag">スイートベルモット</span><span class="tag">ビターズ</span><span class="tag tag-flavor">甘い</span><span class="tag tag-flavor">苦い</span></div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice="lemon"><div class="card-name">ウイスキーサワー</div><div class="card-name-en">Whiskey Sour</div><div class="card-desc">バーボン＋レモンジュース＋シュガー。酸味と甘みのバランスが取りやすい入門カクテル。</div><div class="card-tags"><span class="tag">バーボン</span><span class="tag">レモン</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">甘い</span></div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">ミントジュレップ</div><div class="card-name-en">Mint Julep</div><div class="card-desc">バーボン＋ミント＋砂糖＋クラッシュドアイス。ケンタッキーダービーの公式カクテル。</div><div class="card-tags"><span class="tag">バーボン</span><span class="tag">ミント</span><span class="tag tag-flavor">さっぱり</span><span class="tag tag-flavor">甘い</span></div></div>
       </div>
     </div>
 
     <div class="base-section" data-section="other">
       <div class="base-label">✨ その他</div>
       <div class="cards">
-        <div class="card" data-base="other" data-carbonated="false" data-juice="lemon"><div class="card-name">サイドカー</div><div class="card-name-en">Sidecar</div><div class="card-desc">ブランデー＋コアントロー＋レモンジュース。1920年代パリ生まれのクラシック。</div></div>
-        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">アペロールスプリッツ</div><div class="card-name-en">Aperol Spritz</div><div class="card-desc">アペロール＋プロセッコ＋ソーダ。オレンジ色が鮮やかなイタリアの食前酒。</div></div>
-        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">シャンパンカクテル</div><div class="card-name-en">Champagne Cocktail</div><div class="card-desc">シャンパン＋角砂糖＋ビターズ。エレガントでお祝いの席にぴったり。</div></div>
+        <div class="card" data-base="other" data-carbonated="false" data-juice="lemon"><div class="card-name">サイドカー</div><div class="card-name-en">Sidecar</div><div class="card-desc">ブランデー＋コアントロー＋レモンジュース。1920年代パリ生まれのクラシック。</div><div class="card-tags"><span class="tag">ブランデー</span><span class="tag">コアントロー</span><span class="tag">レモン</span><span class="tag tag-flavor">酸っぱい</span><span class="tag tag-flavor">甘い</span></div></div>
+        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">アペロールスプリッツ</div><div class="card-name-en">Aperol Spritz</div><div class="card-desc">アペロール＋プロセッコ＋ソーダ。オレンジ色が鮮やかなイタリアの食前酒。</div><div class="card-tags"><span class="tag">アペロール</span><span class="tag">プロセッコ</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">ほろ苦い</span><span class="tag tag-flavor">さっぱり</span></div></div>
+        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">シャンパンカクテル</div><div class="card-name-en">Champagne Cocktail</div><div class="card-desc">シャンパン＋角砂糖＋ビターズ。エレガントでお祝いの席にぴったり。</div><div class="card-tags"><span class="tag">シャンパン</span><span class="tag">ビターズ</span><span class="tag tag-carbonated">炭酸あり</span><span class="tag tag-flavor">辛口</span><span class="tag tag-flavor">ほろ苦い</span></div></div>
       </div>
     </div>
 
@@ -537,7 +608,59 @@
 
 </div><!-- /container -->
 
+<!-- TAG POPUP -->
+<div id="tagPopup" onclick="closePopup()">
+  <div id="tagPopupCard" onclick="event.stopPropagation()">
+    <div id="tagPopupClose" onclick="closePopup()">✕</div>
+    <div id="tagPopupTitle"></div>
+    <div id="tagPopupCategory"></div>
+    <div id="tagPopupBody"></div>
+  </div>
+</div>
+
 <script>
+  /* ─── Tag dictionary ─── */
+  const tagDict = {
+    'コアントロー':     { cat: 'オレンジリキュール', body: 'フランス生まれのオレンジリキュール。アルコール度数40度。スイートオレンジとビターオレンジの果皮を蒸留して作られ、透明感のある香りとすっきりした甘さが特徴。マルガリータ・コスモポリタン・サイドカーなどに使われる。' },
+    'カンパリ':         { cat: 'ビタースリキュール', body: 'イタリア生まれの鮮やかな赤色のリキュール。アルコール度数20〜25度。オレンジの皮やハーブ・スパイスを浸漬して作られ、甘さの中に独特の苦みがある。ネグローニやアメリカーノに欠かせない。' },
+    'アペロール':       { cat: 'ビタースリキュール', body: 'イタリア・パドヴァ生まれのオレンジ色のリキュール。アルコール度数11度と低く、カンパリより苦みが穏やかで飲みやすい。プロセッコとソーダで割るアペロールスプリッツが代表的。' },
+    'カルーア':         { cat: 'コーヒーリキュール', body: 'メキシコ産のコーヒーリキュール。アルコール度数20度。アラビカコーヒー豆とラムをベースにバニラの風味を加えた甘くリッチな味わい。ホワイトロシアン・エスプレッソマティーニに使われる。' },
+    'ドライベルモット':  { cat: 'フォーティファイドワイン', body: 'ワインにハーブ・スパイスを加えた辛口の酒精強化ワイン。マティーニのキーとなる素材で、開封後は冷蔵保存し1〜2か月以内に使い切るのがおすすめ。' },
+    'スイートベルモット': { cat: 'フォーティファイドワイン', body: 'ワインにハーブ・スパイスを加えた甘口の酒精強化ワイン。マンハッタンやネグローニに使われる。赤みがかった色と豊かな甘みが特徴。' },
+    'グレナデン':       { cat: 'シロップ', body: 'ザクロの果汁と砂糖から作られる濃い赤色のシロップ。ノンアルコール。テキーラサンライズの日の出グラデーションやシンガポールスリングの色付けに使われる。' },
+    'ビターズ':         { cat: 'ビターズ', body: 'トリニダード＆トバゴ産のアンゴスチュラビターズが定番。度数44.7度だが数滴単位で使うため風味付け目的。オールドファッションド・マンハッタンなどに複雑さと深みをもたらす。' },
+    'トニックウォーター': { cat: '炭酸飲料', body: '炭酸水にキニーネ・砂糖・柑橘香料を加えた飲料。ほのかな苦みと甘みが独特のバランスを生む。ジントニックのミキサーとして定番で、クラフトトニックも近年人気。' },
+    'ジンジャービア':   { cat: '炭酸飲料', body: '生姜を発酵または抽出して作る辛口の炭酸飲料。ジンジャーエールより生姜の風味が強くピリッとした刺激が特徴。モスコミュール・ダーク＆ストーミーに欠かせない。' },
+    'プロセッコ':       { cat: 'スパークリングワイン', body: 'イタリア・ヴェネト州産のスパークリングワイン。シャンパンより気軽に楽しめる価格帯と、フルーティーで軽やかな味わいが特徴。アペロールスプリッツのベースとして定番。' },
+    'チェリーリキュール': { cat: 'リキュール', body: 'さくらんぼを原料としたリキュール。代表銘柄はヘーリングやルクサルド。甘みと独特の香りがあり、シンガポールスリングやブラッドアンドサンドなどに使われる。' },
+  };
+
+  function openTagPopup(name) {
+    const data = tagDict[name];
+    if (!data) return;
+    document.getElementById('tagPopupTitle').textContent = name;
+    document.getElementById('tagPopupCategory').textContent = data.cat;
+    document.getElementById('tagPopupBody').textContent = data.body;
+    document.getElementById('tagPopup').classList.add('open');
+  }
+
+  function closePopup() {
+    document.getElementById('tagPopup').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+
+  /* タグにクリックハンドラを付与 */
+  document.querySelectorAll('.tag').forEach(tag => {
+    if (tagDict[tag.textContent.trim()]) {
+      tag.classList.add('tag-link');
+      tag.addEventListener('click', e => {
+        e.stopPropagation();
+        openTagPopup(tag.textContent.trim());
+      });
+    }
+  });
+
   /* ─── Tab switch ─── */
   function switchTab(tab, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
