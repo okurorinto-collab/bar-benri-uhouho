@@ -11,12 +11,12 @@
     --bg: #0d0d1a;
     --surface: #161628;
     --surface2: #1e1e35;
-    --border: rgba(255,255,255,0.08);
-    --text: #e8e8f0;
-    --muted: #888899;
+    --border: rgba(255,255,255,0.12);
+    --text: #f2f2fa;
+    --muted: #c8c8e0;
     --accent: #a78bfa;
     --accent-rgb: 167,139,250;
-    --h1-from: #e8e8f0;
+    --h1-from: #f2f2fa;
     --h1-to: #a78bfa;
   }
 
@@ -210,8 +210,16 @@
   }
   .tag-carbonated { color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
   .tag-flavor { color: #c4b5fd; border-color: rgba(196,181,253,0.25); }
-  .tag-link { cursor: pointer; }
-  .tag-link:hover { border-color: rgba(var(--accent-rgb),0.5); color: var(--text); }
+  .tag-link {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text);
+    border-color: rgba(var(--accent-rgb),0.3);
+  }
+  .tag-link:hover {
+    background: rgba(var(--accent-rgb),0.12);
+    border-color: rgba(var(--accent-rgb),0.6);
+  }
 
   /* ─── Tag popup ─── */
   #tagPopup {
