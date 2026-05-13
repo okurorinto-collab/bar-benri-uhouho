@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カクテル定番まとめ</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d1a;
+    --surface: #161628;
+    --surface2: #1e1e35;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8e8f0;
+    --muted: #888899;
+    --accent: #a78bfa;
+    --accent-rgb: 167,139,250;
+    --h1-from: #e8e8f0;
+    --h1-to: #a78bfa;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    text-align: center;
+    padding: 56px 24px 32px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb),0.15) 0%, transparent 70%);
+  }
+
+  header .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  header h1 {
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--h1-from) 0%, var(--h1-to) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  header p { color: var(--muted); font-size: 14px; }
+
+  /* ─── Tab nav ─── */
+  .tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px 24px 0;
+  }
+
+  .tab-btn {
+    padding: 8px 24px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: transparent;
+  }
+
+
+  /* ─── Filters ─── */
+  .filter-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(13,13,26,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+  }
+
+  .filter-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    min-width: 52px;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+
+  .chip {
+    padding: 4px 13px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    line-height: 1.4;
+    user-select: none;
+  }
+
+  .chip:hover { border-color: rgba(var(--accent-rgb),0.4); color: var(--text); }
+  .chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+
+  .reset-btn {
+    padding: 4px 13px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .reset-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  .filter-meta { font-size: 12px; color: var(--muted); }
+
+  /* ─── Cards ─── */
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  .base-section { margin-bottom: 40px; }
+  .base-section.hidden { display: none; }
+
+  .base-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .base-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover { border-color: rgba(var(--accent-rgb),0.3); transform: translateY(-2px); }
+  .card.hidden { display: none; }
+
+  .card-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+  .card-name-en { font-size: 11px; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty-state.show { display: block; }
+
+  /* ─── Dictionary ─── */
+  #dictView { display: none; }
+
+  .dict-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .dict-entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .dict-entry:hover { border-color: rgba(var(--accent-rgb),0.25); }
+
+  .dict-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 18px 22px 16px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  .dict-header::-webkit-details-marker { display: none; }
+
+  .dict-term {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .dict-term-en {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .dict-tag {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+
+  .dict-body {
+    padding: 0 22px 20px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  details[open] .dict-header { color: var(--accent); }
+  details[open] { border-color: rgba(var(--accent-rgb),0.3); }
+
+  .dict-section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 32px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dict-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .dict-section-label:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Cocktail Guide</p>
+  <h1>🍹 カクテル定番まとめ</h1>
+  <p>バーで使える定番26種</p>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('summary', this)">📖 まとめ</button>
+  <button class="tab-btn" onclick="switchTab('dict', this)">📚 辞書</button>
+</div>
+
+<!-- FILTERS (summary only) -->
+<div class="filter-wrap" id="filterBar">
+  <div class="filter-inner">
+    <div class="filter-row">
+      <span class="filter-label">酒</span>
+      <div class="chips">
+        <button class="chip" data-filter="base" data-value="gin">ジン</button>
+        <button class="chip" data-filter="base" data-value="vodka">ウォッカ</button>
+        <button class="chip" data-filter="base" data-value="rum">ラム</button>
+        <button class="chip" data-filter="base" data-value="tequila">テキーラ</button>
+        <button class="chip" data-filter="base" data-value="whiskey">ウイスキー</button>
+        <button class="chip" data-filter="base" data-value="other">その他</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">炭酸</span>
+      <div class="chips">
+        <button class="chip" data-filter="carbonated" data-value="true">あり</button>
+        <button class="chip" data-filter="carbonated" data-value="false">なし</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">ジュース</span>
+      <div class="chips">
+        <button class="chip" data-filter="juice" data-value="lime">ライム</button>
+        <button class="chip" data-filter="juice" data-value="lemon">レモン</button>
+        <button class="chip" data-filter="juice" data-value="orange">オレンジ</button>
+        <button class="chip" data-filter="juice" data-value="pineapple">パイナップル</button>
+        <button class="chip" data-filter="juice" data-value="grapefruit">グレープフルーツ</button>
+        <button class="chip" data-filter="juice" data-value="cranberry">クランベリー</button>
+        <button class="chip" data-filter="juice" data-value="tomato">トマト</button>
+      </div>
+    </div>
+    <div class="filter-row" style="justify-content:space-between;">
+      <span class="filter-meta" id="filterMeta">26種を表示中</span>
+      <button class="reset-btn" onclick="resetFilters()">リセット</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SUMMARY -->
+  <div id="summaryView">
+
+    <div class="base-section" data-section="gin">
+      <div class="base-label">🫙 ジン</div>
+      <div class="cards">
+        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">マティーニ</div><div class="card-name-en">Martini</div><div class="card-desc">ジン＋ドライベルモット。カクテルの王様と呼ばれる定番中の定番。</div></div>
+        <div class="card" data-base="gin" data-carbonated="false" data-juice="lime"><div class="card-name">ギムレット</div><div class="card-name-en">Gimlet</div><div class="card-desc">ジン＋ライムジュース＋シュガー。「ギムレットには早すぎる」の名言で有名。</div></div>
+        <div class="card" data-base="gin" data-carbonated="false" data-juice=""><div class="card-name">ネグローニ</div><div class="card-name-en">Negroni</div><div class="card-desc">ジン＋カンパリ＋スイートベルモット。苦みと甘みのバランスが絶妙。</div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice="lemon"><div class="card-name">トムコリンズ</div><div class="card-name-en">Tom Collins</div><div class="card-desc">ジン＋レモンジュース＋シュガー＋ソーダ。爽やかな夏向きロングカクテル。</div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice="pineapple lemon"><div class="card-name">シンガポールスリング</div><div class="card-name-en">Singapore Sling</div><div class="card-desc">ジンベースにチェリーリキュール、パイン、グレナデンなど。複雑な甘みと酸味。</div></div>
+        <div class="card" data-base="gin" data-carbonated="true" data-juice=""><div class="card-name">ジントニック</div><div class="card-name-en">Gin & Tonic</div><div class="card-desc">ジン＋トニックウォーター。最もシンプルで世界中で愛されるロングカクテル。</div></div>
+      </div>
+    </div>
+
+    <div class="base-section" data-section="vodka">
+      <div class="base-label">🥃 ウォッカ</div>
+      <div class="cards">
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="cranberry lime"><div class="card-name">コスモポリタン</div><div class="card-name-en">Cosmopolitan</div><div class="card-desc">ウォッカ＋コアントロー＋クランベリー＋ライム。ピンク色が美しいショートカクテル。</div></div>
+        <div class="card" data-base="vodka" data-carbonated="true" data-juice="lime"><div class="card-name">モスコミュール</div><div class="card-name-en">Moscow Mule</div><div class="card-desc">ウォッカ＋ジンジャービア＋ライム。銅のマグカップで提供されることで有名。</div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="tomato lemon"><div class="card-name">ブラッディマリー</div><div class="card-name-en">Bloody Mary</div><div class="card-desc">ウォッカ＋トマトジュース＋レモン＋スパイス。二日酔いに効くと言われる。</div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice="orange"><div class="card-name">スクリュードライバー</div><div class="card-name-en">Screwdriver</div><div class="card-desc">ウォッカ＋オレンジジュース。シンプルで飲みやすい定番ロングカクテル。</div></div>
+        <div class="card" data-base="vodka" data-carbonated="false" data-juice=""><div class="card-name">ホワイトロシアン</div><div class="card-name-en">White Russian</div><div class="card-desc">ウォッカ＋コーヒーリキュール＋生クリーム。映画「ビッグ・リボウスキ」でも有名。</div></div>
+      </div>
+    </div>
+
+    <div class="base-section" data-section="rum">
+      <div class="base-label">🥃 ラム</div>
+      <div class="cards">
+        <div class="card" data-base="rum" data-carbonated="false" data-juice="lime"><div class="card-name">ダイキリ</div><div class="card-name-en">Daiquiri</div><div class="card-desc">ラム＋ライムジュース＋シュガー。ヘミングウェイが愛したキューバ生まれのカクテル。</div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">モヒート</div><div class="card-name-en">Mojito</div><div class="card-desc">ラム＋ライム＋ミント＋シュガー＋ソーダ。爽やかな香りが特徴の夏の定番。</div></div>
+        <div class="card" data-base="rum" data-carbonated="false" data-juice="pineapple"><div class="card-name">ピニャコラーダ</div><div class="card-name-en">Piña Colada</div><div class="card-desc">ラム＋ココナッツクリーム＋パイナップルジュース。トロピカルな甘みが人気。</div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">キューバリブレ</div><div class="card-name-en">Cuba Libre</div><div class="card-desc">ラム＋コーラ＋ライム。別名「ラム&コーク」。シンプルで世界中で親しまれる。</div></div>
+        <div class="card" data-base="rum" data-carbonated="true" data-juice="lime"><div class="card-name">ダーク＆ストーミー</div><div class="card-name-en">Dark & Stormy</div><div class="card-desc">ダークラム＋ジンジャービア＋ライム。バミューダ発祥のスパイシーなカクテル。</div></div>
+      </div>
+    </div>
+
+    <div class="base-section" data-section="tequila">
+      <div class="base-label">🌵 テキーラ</div>
+      <div class="cards">
+        <div class="card" data-base="tequila" data-carbonated="false" data-juice="lime"><div class="card-name">マルガリータ</div><div class="card-name-en">Margarita</div><div class="card-desc">テキーラ＋コアントロー＋ライム。塩のスノースタイルが特徴的な定番ショート。</div></div>
+        <div class="card" data-base="tequila" data-carbonated="false" data-juice="orange"><div class="card-name">テキーラサンライズ</div><div class="card-name-en">Tequila Sunrise</div><div class="card-desc">テキーラ＋OJ＋グレナデン。日の出を思わせるグラデーションが美しい。</div></div>
+        <div class="card" data-base="tequila" data-carbonated="true" data-juice="grapefruit lime"><div class="card-name">パロマ</div><div class="card-name-en">Paloma</div><div class="card-desc">テキーラ＋グレープフルーツソーダ＋ライム。メキシコで最も飲まれるカクテルとも。</div></div>
+      </div>
+    </div>
+
+    <div class="base-section" data-section="whiskey">
+      <div class="base-label">🥃 ウイスキー</div>
+      <div class="cards">
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">オールドファッションド</div><div class="card-name-en">Old Fashioned</div><div class="card-desc">ウイスキー＋砂糖＋ビターズ。現存する最古のカクテルレシピのひとつ。</div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">マンハッタン</div><div class="card-name-en">Manhattan</div><div class="card-desc">ライウイスキー＋スイートベルモット＋ビターズ。「カクテルの女王」とも呼ばれる。</div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice="lemon"><div class="card-name">ウイスキーサワー</div><div class="card-name-en">Whiskey Sour</div><div class="card-desc">バーボン＋レモンジュース＋シュガー。酸味と甘みのバランスが取りやすい入門カクテル。</div></div>
+        <div class="card" data-base="whiskey" data-carbonated="false" data-juice=""><div class="card-name">ミントジュレップ</div><div class="card-name-en">Mint Julep</div><div class="card-desc">バーボン＋ミント＋砂糖＋クラッシュドアイス。ケンタッキーダービーの公式カクテル。</div></div>
+      </div>
+    </div>
+
+    <div class="base-section" data-section="other">
+      <div class="base-label">✨ その他</div>
+      <div class="cards">
+        <div class="card" data-base="other" data-carbonated="false" data-juice="lemon"><div class="card-name">サイドカー</div><div class="card-name-en">Sidecar</div><div class="card-desc">ブランデー＋コアントロー＋レモンジュース。1920年代パリ生まれのクラシック。</div></div>
+        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">アペロールスプリッツ</div><div class="card-name-en">Aperol Spritz</div><div class="card-desc">アペロール＋プロセッコ＋ソーダ。オレンジ色が鮮やかなイタリアの食前酒。</div></div>
+        <div class="card" data-base="other" data-carbonated="true" data-juice=""><div class="card-name">シャンパンカクテル</div><div class="card-name-en">Champagne Cocktail</div><div class="card-desc">シャンパン＋角砂糖＋ビターズ。エレガントでお祝いの席にぴったり。</div></div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState">該当するカクテルが見つかりません</div>
+  </div>
+
+  <!-- DICTIONARY -->
+  <div id="dictView">
+
+    <div class="dict-section-label">リキュール</div>
+    <div class="dict-list">
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">コアントロー</span>
+          <span class="dict-term-en">Cointreau</span>
+          <span class="dict-tag">オレンジリキュール</span>
+        </summary>
+        <div class="dict-body">
+          コアントロー（Cointreau）は、フランスで誕生したオレンジリキュールです。アルコール度数は40度。甘みのあるスイートオレンジと、香りを引き締めるビターオレンジの果皮を蒸留して作られており、透明感のある香りとすっきりした甘さが特徴です。<br><br>
+          カクテルだけでなくお菓子作りにも広く使われ、世界中のバーテンダーやパティシエから選ばれ続けています。マルガリータ・コスモポリタン・サイドカーなどに使われる。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">カンパリ</span>
+          <span class="dict-term-en">Campari</span>
+          <span class="dict-tag">ビタースリキュール</span>
+        </summary>
+        <div class="dict-body">
+          イタリア生まれの鮮やかな赤色が特徴のビタースリキュール。アルコール度数は20〜25度。オレンジの皮やハーブ・スパイスを浸漬して作られ、甘さの中に独特の苦みがあります。<br><br>
+          ネグローニやアメリカーノなど多くのクラシックカクテルに使われるほか、ソーダ割り（カンパリソーダ）だけでも十分に楽しめます。食前酒として特に人気です。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">アペロール</span>
+          <span class="dict-term-en">Aperol</span>
+          <span class="dict-tag">ビタースリキュール</span>
+        </summary>
+        <div class="dict-body">
+          イタリア・パドヴァ生まれのオレンジ色のリキュール。アルコール度数は11度と低く、カンパリより苦みが穏やかで甘みが強いため飲みやすいのが特徴です。<br><br>
+          オレンジの皮・ルバーブ・ゲンチアナなどがベース。プロセッコとソーダで割る「アペロールスプリッツ」はイタリアを代表する食前酒カクテルとして世界的に広まっています。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">カルーア</span>
+          <span class="dict-term-en">Kahlúa</span>
+          <span class="dict-tag">コーヒーリキュール</span>
+        </summary>
+        <div class="dict-body">
+          メキシコ産のコーヒーリキュール。アルコール度数は20度。アラビカコーヒー豆とサトウキビ由来のラムをベースに、バニラの風味を加えた甘くリッチな味わいが特徴です。<br><br>
+          ホワイトロシアン・ブラックロシアン・エスプレッソマティーニなどに欠かせない素材。牛乳や生クリームとの相性が特に良く、デザートカクテルにも活躍します。
+        </div>
+      </details>
+
+    </div>
+
+    <div class="dict-section-label">副材料・ミキサー</div>
+    <div class="dict-list">
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">ベルモット</span>
+          <span class="dict-term-en">Vermouth</span>
+          <span class="dict-tag">フォーティファイドワイン</span>
+        </summary>
+        <div class="dict-body">
+          ワインにハーブ・スパイス・植物エキスを加えて強化した酒精強化ワイン。大きく「ドライ（辛口）」と「スイート（甘口）」の2種類に分かれます。<br><br>
+          ドライベルモットはマティーニに、スイートベルモットはマンハッタンやネグローニに使われます。開封後は冷蔵保存し、1〜2か月以内に使い切るのが鮮度を保つコツです。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">グレナデンシロップ</span>
+          <span class="dict-term-en">Grenadine Syrup</span>
+          <span class="dict-tag">シロップ</span>
+        </summary>
+        <div class="dict-body">
+          ザクロの果汁と砂糖から作られる濃い赤色のシロップ。アルコールを含まないノンアルコール素材で、甘みとわずかな酸味があります。<br><br>
+          テキーラサンライズの日の出グラデーションやシンガポールスリングの色付けに使われるほか、セックスオンザビーチ・シャーリーテンプルなど幅広いカクテルに活躍します。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">アンゴスチュラビターズ</span>
+          <span class="dict-term-en">Angostura Bitters</span>
+          <span class="dict-tag">ビターズ</span>
+        </summary>
+        <div class="dict-body">
+          トリニダード＆トバゴ産の芳香性ビターズ。アルコール度数は44.7度と高いですが、使用量はダッシュ（数滴）単位のため風味付けとして機能します。<br><br>
+          オールドファッションド・マンハッタン・シャンパンカクテルなど多くのクラシックレシピに欠かせない存在。カクテルに複雑さと深みをもたらすスパイスのような役割を担います。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">トニックウォーター</span>
+          <span class="dict-term-en">Tonic Water</span>
+          <span class="dict-tag">炭酸飲料</span>
+        </summary>
+        <div class="dict-body">
+          炭酸水にキニーネ（キナの樹皮成分）と砂糖・柑橘香料を加えた炭酸飲料。ほのかな苦みと甘みが独特のバランスを生み出します。アルコールは含みません。<br><br>
+          ジントニックやウォッカトニックのミキサーとして定番。近年はクラフトトニックウォーターも普及し、ボタニカルの風味がジンとのペアリングを楽しむ文化が広まっています。
+        </div>
+      </details>
+
+      <details class="dict-entry">
+        <summary class="dict-header">
+          <span class="dict-term">ジンジャービア</span>
+          <span class="dict-term-en">Ginger Beer</span>
+          <span class="dict-tag">炭酸飲料</span>
+        </summary>
+        <div class="dict-body">
+          生姜を発酵または抽出して作る辛口の炭酸飲料。ジンジャーエールより生姜の風味が強く、ピリッとした刺激が特徴です。アルコールはほぼ含まれないか微量です。<br><br>
+          モスコミュール・ダーク＆ストーミーには欠かせないミキサー。スパイシーな辛みがスピリッツの個性を引き立てます。銅製マグカップで提供するモスコミュールでは、冷たさと辛みが際立ちます。
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  /* ─── Tab switch ─── */
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const isSum = tab === 'summary';
+    document.getElementById('summaryView').style.display = isSum ? '' : 'none';
+    document.getElementById('dictView').style.display    = isSum ? 'none' : '';
+    document.getElementById('filterBar').style.display   = isSum ? '' : 'none';
+  }
+
+  /* ─── Filters ─── */
+  const state = { base: new Set(), carbonated: new Set(), juice: new Set() };
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const { filter, value } = chip.dataset;
+      const s = state[filter];
+      if (filter === 'carbonated') {
+        const wasActive = chip.classList.contains('active');
+        document.querySelectorAll('[data-filter="carbonated"]').forEach(c => c.classList.remove('active'));
+        s.clear();
+        if (!wasActive) { chip.classList.add('active'); s.add(value); }
+      } else {
+        if (s.has(value)) { s.delete(value); chip.classList.remove('active'); }
+        else              { s.add(value);    chip.classList.add('active'); }
+      }
+      applyFilters();
+    });
+  });
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.card');
+    let visible = 0;
+    cards.forEach(card => {
+      const juice = card.dataset.juice.split(' ').filter(Boolean);
+      const show =
+        (state.base.size === 0       || state.base.has(card.dataset.base)) &&
+        (state.carbonated.size === 0 || state.carbonated.has(card.dataset.carbonated)) &&
+        (state.juice.size === 0      || [...state.juice].some(j => juice.includes(j)));
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.querySelectorAll('.base-section').forEach(sec => {
+      const any = [...sec.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      sec.classList.toggle('hidden', !any);
+    });
+    const total = cards.length;
+    document.getElementById('filterMeta').textContent =
+      visible === total ? `${total}種を表示中` : `${visible} / ${total}種を表示中`;
+    document.getElementById('emptyState').classList.toggle('show', visible === 0);
+  }
+
+  function resetFilters() {
+    state.base.clear(); state.carbonated.clear(); state.juice.clear();
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    applyFilters();
+  }
+</script>
+</body>
+</html>
